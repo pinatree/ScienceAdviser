@@ -5,20 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScienceAdviser"
         mc:Ignorable="d"
-        Title="Советник" Height="450" Width="800">
+        Title="Kowalski analysis" Height="550" Width="800" Icon="/Images/ShkiperPenguin.png">
     <Window.Style>
         <Style TargetType="Control">
             <Setter Property="FontSize" Value="30" />
         </Style>
     </Window.Style>
-    <Grid>
+    <Grid Margin="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
@@ -30,18 +30,19 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа деталей" />
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+            
+            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">                
                 <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetailGroup.Name, Mode=OneWay, FallbackValue=fallback}"/>
+                         Text="{Binding SelectedDetailGroup, Mode=OneWay}"/>                
                 <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailGroupCommand}">
                     Выбрать
-                </Button>
+                </Button>                
             </StackPanel>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Подгруппа деталей" />
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                 <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetailSubgroup.Name, Mode=OneWay, FallbackValue=fallback}"/>
+                         Text="{Binding SelectedDetailSubgroup, Mode=OneWay}"/>
                 <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailSubgroupCommand}">
                     Выбрать
                 </Button>
@@ -50,11 +51,14 @@
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Деталь" />
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetail.Name, Mode=OneWay, FallbackValue=fallback}"/>
+                         Text="{Binding SelectedDetail, Mode=OneWay}"/>
                 <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailCommand}">
                     Выбрать
                 </Button>
             </StackPanel>
+            <Button HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
+                Добавить
+            </Button>
         </Grid>
 
         <Grid Grid.Row="1">
@@ -67,25 +71,47 @@
 
             <TextBlock Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Уже найденные детали:" />
 
-            <ListBox Grid.Row="1" Margin="5">
-                
+            <ListBox Grid.Row="1" Margin="5" ItemsSource="{Binding FoundDefectDetails, FallbackValue=error}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="LightGray" Background="LightYellow" Padding="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Grid.IsSharedSizeScope="True" FontSize="15" Text="{Binding Path=DetailGroup, FallbackValue=error}" />
+                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="1" FontSize="15" Text="{Binding Path=DetailSubGroup, FallbackValue=error}" />
+                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="2" FontSize="15" Text="{Binding Path=Detail, FallbackValue=error}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
 
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="auto"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="2" Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Рекомендуемые для проверки детали:" />
 
-                <TextBlock Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Рекомендуемые для проверки детали:" />
-                <TextBlock Margin="0,0,5,0" Grid.Column="2" FontSize="16" Text="Последнее обновление базы:" />
-                <TextBox IsReadOnly="True" Margin="0,0,5,0" Grid.Column="3" FontSize="16" Text="{Binding LastDbUpdate, FallbackValue=fallback}" />
-            </Grid>
-
-            <ListBox Grid.Row="3" Margin="5">
-
+            <ListBox Grid.Row="3" Margin="5" ItemsSource="{Binding Recommendations, FallbackValue=error}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="LightGray" Background="LightYellow" Padding="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Grid.IsSharedSizeScope="True" FontSize="15" Text="{Binding Path=Consequence.DetailGroup, FallbackValue=error}" />
+                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="1" FontSize="15" Text="{Binding Path=Consequence.DetailSubGroup, FallbackValue=error}" />
+                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="2" FontSize="15" Text="{Binding Path=Consequence.Detail, FallbackValue=error}" />
+                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="4" FontSize="15" Text="{Binding Path=Reliability, FallbackValue=error}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
 
         </Grid>

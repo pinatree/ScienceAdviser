@@ -9,19 +9,19 @@ using System.Text.RegularExpressions;
 
 namespace ScienceAdviser.ViewModel.Selectors
 {
-    public class DetailGroupSelectorViewModel : IDetailGroupSelectorViewModel, INotifyPropertyChanged
+    public class DetailSubgroupSelectorViewModel : IDetailSubgroupSelectorViewModel, INotifyPropertyChanged
     {
         private RulesForDetailRepository _repository;
 
-        private ObservableCollection<string> foundDetailGroups = new ObservableCollection<string>();
-        public ObservableCollection<string> FoundDetailGroups
+        private ObservableCollection<string> foundDetailSubgroups = new ObservableCollection<string>();
+        public ObservableCollection<string> FoundDetailSubgroups
         {
-            get => foundDetailGroups;
-            private set
+            get => foundDetailSubgroups;
+            set
             {
-                if (value != foundDetailGroups)
+                if (value != foundDetailSubgroups)
                 {
-                    foundDetailGroups = value;
+                    foundDetailSubgroups = value;
                     NotifyPropertyChanged();
                 }
             }
@@ -30,7 +30,7 @@ namespace ScienceAdviser.ViewModel.Selectors
         private string regexFilter = "";
         public string RegexFilter
         {
-            private get => regexFilter;
+            get => regexFilter;
             set
             {
                 if(value != regexFilter)
@@ -41,30 +41,29 @@ namespace ScienceAdviser.ViewModel.Selectors
             }
         }
 
-        public string SelectedDetailGroup
-        {
-            get;
-            set;
-        }
+        public string SelectedDetailGroup { get; set; }
+
+        public string SelectedDetailSubgroup { get; set; }
 
         public RelayCommand SelectItemCommand { get; set; }
 
         public RelayCommand FindByFilterCommand { get; set; }
 
 
-        public DetailGroupSelectorViewModel(RulesForDetailRepository repository, Action close)
+        public DetailSubgroupSelectorViewModel(RulesForDetailRepository repository, string group, Action close)
         {
             _repository = repository;
             SelectItemCommand = new RelayCommand((x) => close.Invoke());
             FindByFilterCommand = new RelayCommand((x) => UpdateFoundList());
+            SelectedDetailGroup = group;
             UpdateFoundList();
         }
 
         private void UpdateFoundList()
         {
             //Вынести логику выбора по regex в репозиторий!!!
-            var enumGroups = _repository.GetAvailableDetailGroups().Where(group => Regex.IsMatch(group, RegexFilter));
-            FoundDetailGroups = new ObservableCollection<string>(enumGroups);
+            var enumGroups = _repository.GetAvailableDetailSubgroups(SelectedDetailGroup).Where(group => Regex.IsMatch(group, RegexFilter));
+            FoundDetailSubgroups = new ObservableCollection<string>(enumGroups);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

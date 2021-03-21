@@ -13,5 +13,14 @@ namespace ScienceAdviser
     /// </summary>
     public partial class App : Application
     {
+        public App()
+        {
+            WriteAutofacDependencies();
+        }
+
+        private void WriteAutofacDependencies()
+        {
+
+        }
     }
 }

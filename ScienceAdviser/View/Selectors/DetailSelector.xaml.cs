@@ -16,20 +16,20 @@ using System.Windows.Shapes;
 
 namespace ScienceAdviser.View.Selectors
 {
-    public partial class DetailGroupSelector : Window
+    public partial class DetailSelector : Window
     {
-        private IDetailGroupSelectorViewModel _dataContext;
+        private IDetailSelectorViewModel _dataContext;
 
-        public string FoundDetailGroup
+        public string FoundDetail
         {
-            get => _dataContext.SelectedDetailGroup;
+            get => _dataContext.SelectedDetail;
         }
 
-        public DetailGroupSelector(RulesForDetailRepository repository)
+        public DetailSelector(RulesForDetailRepository repository, string group, string subgroup)
         {
             InitializeComponent();
 
-            _dataContext = new DetailGroupSelectorViewModel(repository, Close);
+            _dataContext = new DetailSelectorViewModel(repository, group, subgroup, Close);
             this.DataContext = _dataContext;
         }
     }
