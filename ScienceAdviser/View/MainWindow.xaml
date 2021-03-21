@@ -3,9 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:ScienceAdviser.Converters"
         xmlns:local="clr-namespace:ScienceAdviser"
         mc:Ignorable="d"
         Title="Kowalski analysis" Height="550" Width="800" Icon="/Images/ShkiperPenguin.png">
+    <Window.Resources>
+        <converters:NullOrEmpryStrToBoolConverter x:Key="NullOrEmpryStrToBoolConverter"/>
+    </Window.Resources>
     <Window.Style>
         <Style TargetType="Control">
             <Setter Property="FontSize" Value="30" />
@@ -43,7 +47,9 @@
             <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
                 <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
                          Text="{Binding SelectedDetailSubgroup, Mode=OneWay}"/>
-                <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailSubgroupCommand}">
+                <Button
+                    IsEnabled="{Binding SelectedDetailGroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
+                        FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailSubgroupCommand}">
                     Выбрать
                 </Button>
             </StackPanel>
@@ -52,11 +58,15 @@
             <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                 <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
                          Text="{Binding SelectedDetail, Mode=OneWay}"/>
-                <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailCommand}">
+                <Button
+                    IsEnabled="{Binding SelectedDetailSubgroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
+                    FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailCommand}">
                     Выбрать
                 </Button>
             </StackPanel>
-            <Button HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
+            <Button
+                IsEnabled="{Binding SelectedDetail, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
+                HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
                 Добавить
             </Button>
         </Grid>

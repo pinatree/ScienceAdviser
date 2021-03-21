@@ -122,18 +122,18 @@ namespace ScienceAdviser.ViewModel
             }
 
 
-            try
-            {
+            //try
+            //{
 
-                SelectedDetailGroup = _repository.GetAvailableDetailGroups().First();
-                SelectedDetailSubgroup = _repository.GetAvailableDetailSubgroups(SelectedDetailGroup).First();
-                SelectedDetail = _repository.GetAvailableDetails(SelectedDetailGroup, SelectedDetailSubgroup).First();
-            }
-            catch
-            {
-                MessageBox.Show("Указанный файл Excel либо пустой, либо заполнен некорректно. Выполнение анализа невозможно.");
-                Application.Current.Shutdown();
-            }
+            //    SelectedDetailGroup = _repository.GetAvailableDetailGroups().First();
+            //    SelectedDetailSubgroup = _repository.GetAvailableDetailSubgroups(SelectedDetailGroup).First();
+            //    SelectedDetail = _repository.GetAvailableDetails(SelectedDetailGroup, SelectedDetailSubgroup).First();
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Указанный файл Excel либо пустой, либо заполнен некорректно. Выполнение анализа невозможно.");
+            //    Application.Current.Shutdown();
+            //}
         }
 
         private void FindDetailGroup()

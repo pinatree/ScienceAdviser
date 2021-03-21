@@ -94,6 +94,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\NullOrEmpryStrToBoolConverter.cs" />
     <Compile Include="Model\Repositories\DetailDefects\DataTypes\ExcelRuleWithDetailRecord.cs" />
     <Compile Include="Model\Repositories\DetailDefects\RuleWithDetail.cs" />
     <Compile Include="Model\Repositories\DetailDefects\DataReader\RulesWithDetailReader.cs" />
