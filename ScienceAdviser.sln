@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser", "ScienceAdviser\ScienceAdviser.csproj", "{17569879-A6FD-487A-A6D9-5C9976A1FE2C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.View", "ScienceAdviser\ScienceAdviser.View.csproj", "{17569879-A6FD-487A-A6D9-5C9976A1FE2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.ViewModel", "ScienceAdviser.ViewModel\ScienceAdviser.ViewModel.csproj", "{0CECF972-B2CE-4A9E-B09D-A205A683DAC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.ExcelModel", "ScienceAdviser.Model\ScienceAdviser.ExcelModel.csproj", "{872EC423-40C7-4701-89D2-FF76F8F3B1D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.IModel", "ScienceAdviser.IModel\ScienceAdviser.IModel.csproj", "{5B79A680-AAAE-446D-A879-3F561913AD24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.IViewModel", "ScienceAdviser.IViewModel\ScienceAdviser.IViewModel.csproj", "{02B88CA1-2880-4F4C-9A84-524010AF490C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScienceAdviser.Model", "ScienceAdviser.Model", "{B614B368-F6C3-4364-A3B0-C28E61A8A99B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScienceAdviser.View", "ScienceAdviser.View", "{AAEF081E-28C5-4D33-987B-695319418023}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ScienceAdviser.ViewModel", "ScienceAdviser.ViewModel", "{FA42E811-C9F8-458B-BA55-7D287486F121}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DI", "DI", "{4C6D7DDE-238E-43E5-8E87-CEDEB156EF46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScienceAdviser.DI", "ScienceAdviser.DI\ScienceAdviser.DI.csproj", "{864A58D1-65CF-41F5-9405-3119E367838F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +33,37 @@ Global
 		{17569879-A6FD-487A-A6D9-5C9976A1FE2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17569879-A6FD-487A-A6D9-5C9976A1FE2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17569879-A6FD-487A-A6D9-5C9976A1FE2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CECF972-B2CE-4A9E-B09D-A205A683DAC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CECF972-B2CE-4A9E-B09D-A205A683DAC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CECF972-B2CE-4A9E-B09D-A205A683DAC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CECF972-B2CE-4A9E-B09D-A205A683DAC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{872EC423-40C7-4701-89D2-FF76F8F3B1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{872EC423-40C7-4701-89D2-FF76F8F3B1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{872EC423-40C7-4701-89D2-FF76F8F3B1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{872EC423-40C7-4701-89D2-FF76F8F3B1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B79A680-AAAE-446D-A879-3F561913AD24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B79A680-AAAE-446D-A879-3F561913AD24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B79A680-AAAE-446D-A879-3F561913AD24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B79A680-AAAE-446D-A879-3F561913AD24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02B88CA1-2880-4F4C-9A84-524010AF490C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02B88CA1-2880-4F4C-9A84-524010AF490C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02B88CA1-2880-4F4C-9A84-524010AF490C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02B88CA1-2880-4F4C-9A84-524010AF490C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{864A58D1-65CF-41F5-9405-3119E367838F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{864A58D1-65CF-41F5-9405-3119E367838F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{864A58D1-65CF-41F5-9405-3119E367838F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{864A58D1-65CF-41F5-9405-3119E367838F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{17569879-A6FD-487A-A6D9-5C9976A1FE2C} = {AAEF081E-28C5-4D33-987B-695319418023}
+		{0CECF972-B2CE-4A9E-B09D-A205A683DAC3} = {FA42E811-C9F8-458B-BA55-7D287486F121}
+		{872EC423-40C7-4701-89D2-FF76F8F3B1D5} = {B614B368-F6C3-4364-A3B0-C28E61A8A99B}
+		{5B79A680-AAAE-446D-A879-3F561913AD24} = {B614B368-F6C3-4364-A3B0-C28E61A8A99B}
+		{02B88CA1-2880-4F4C-9A84-524010AF490C} = {FA42E811-C9F8-458B-BA55-7D287486F121}
+		{864A58D1-65CF-41F5-9405-3119E367838F} = {4C6D7DDE-238E-43E5-8E87-CEDEB156EF46}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7056F12-DC6B-40C0-8293-BC8B3FC91801}
