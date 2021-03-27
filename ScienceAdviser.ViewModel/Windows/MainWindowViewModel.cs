@@ -95,8 +95,8 @@ namespace ScienceAdviser.ViewModel.Windows
         public RelayCommand FindDetailSubgroupCommand { get; set; }
         public RelayCommand FindDetailCommand { get; set; }
         public RelayCommand AddToFoundListCommand { get; set; }
+        public RelayCommand RemoveDetailCommand { get; set; }
 
-        //private RulesForDetailRepository _repository;
         private IRulesRepository _repository;
         private IDetailGroupSelector _detailGroupSelector;
         private IDetailSubgroupSelector _detailSubgroupSelector;
@@ -110,6 +110,10 @@ namespace ScienceAdviser.ViewModel.Windows
             _detailSelector = detailSelector;
 
             InitCommands();
+
+            SelectedDetailGroup = repository.GetAvailableDetailGroups().First();
+            SelectedDetailSubgroup = repository.GetAvailableDetailSubgroups(SelectedDetailGroup).First();
+            SelectedDetail = repository.GetAvailableDetails(SelectedDetailGroup, SelectedDetailSubgroup).First();
         }
 
         private void FindDetailGroup()
@@ -165,26 +169,48 @@ namespace ScienceAdviser.ViewModel.Windows
 
         private void UpdateRecomendations()
         {
+            var newRecommendations = new ObservableCollection<RuleWithDetail>();
+
             foreach (DetailDefect item in FoundDefectDetails)
             {
                 IEnumerable<RuleWithDetail> associations = _repository.GetAssociations(item);
 
                 foreach (var rule in associations)
                 {
-                    if (Recommendations.Contains(rule))
+                    if (newRecommendations.Contains(rule))
                         continue;
                     else
-                        Recommendations.Add(rule);
+                        newRecommendations.Add(rule);
                 }
             }
+
+            Recommendations = new ObservableCollection<RuleWithDetail>(newRecommendations.OrderByDescending(recommendation => recommendation.Reliability));
         }
 
         private void InitCommands()
         {
-            FindDetailGroupCommand = new RelayCommand(() => FindDetailGroup());
-            FindDetailSubgroupCommand = new RelayCommand(() => FindDetailSubgroup());
-            FindDetailCommand = new RelayCommand(() => FindDetail());
-            AddToFoundListCommand = new RelayCommand(() => AddToList());
+            FindDetailGroupCommand = new RelayCommand((x) => FindDetailGroup());
+            FindDetailSubgroupCommand = new RelayCommand((x) => FindDetailSubgroup());
+            FindDetailCommand = new RelayCommand((x) => FindDetail());
+            AddToFoundListCommand = new RelayCommand((x) => AddToList());
+            RemoveDetailCommand = new RelayCommand((detail) =>
+            {
+                DetailDefect searchDetail = (DetailDefect)detail;
+
+                if (searchDetail == null)
+                    return;
+
+                var found = FoundDefectDetails.FirstOrDefault(det =>
+                    det.Detail == searchDetail.Detail &&
+                    det.DetailSubGroup == searchDetail.DetailSubGroup &&
+                    det.DetailGroup == searchDetail.DetailGroup);
+
+                if(found != null)
+                {
+                    FoundDefectDetails.Remove(found);
+                    UpdateRecomendations();
+                }
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

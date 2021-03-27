@@ -17,5 +17,6 @@ namespace ScienceAdviser.IViewModel.Windows
         RelayCommand FindDetailSubgroupCommand { get; set; }
         RelayCommand FindDetailCommand { get; set; }
         RelayCommand AddToFoundListCommand { get; set; }
+        RelayCommand RemoveDetailCommand { get; set; }
     }
 }

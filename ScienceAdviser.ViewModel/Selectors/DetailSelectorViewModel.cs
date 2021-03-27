@@ -56,8 +56,8 @@ namespace ScienceAdviser.ViewModel.Selectors
         public DetailSelectorViewModel(IRulesRepository repository, string group, string subgroup, Action close)
         {
             _repository = repository;
-            SelectItemCommand = new RelayCommand(() => close.Invoke());
-            FindByFilterCommand = new RelayCommand(() => UpdateFoundList());
+            SelectItemCommand = new RelayCommand((x) => close.Invoke());
+            FindByFilterCommand = new RelayCommand((x) => UpdateFoundList());
             SelectedDetailGroup = group;
             SelectedDetailSubgroup = subgroup;
             UpdateFoundList();

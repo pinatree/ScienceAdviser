@@ -6,108 +6,64 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows.Input;
 
 namespace ScienceAdviser.IViewModel.Helpers
 {
+    //КОД БЫЛ СКОПИРОВАН ЦЕЛИКОМ И ПОЛНОСТЬЮ С https://sparethought.wordpress.com/2011/08/10/wpf-using-commands-with-commandparameter-without-commandmanager/
+    //В СВЯЗИ С ТЕМ, ЧТО ПРИ ВЫНОСЕ В ОТДЕЛЬНУЮ БИБЛИОТЕКУ НЕТ ДОСТУПА К CommandManager ИЗ System.Windows.Input.
+    //Если будут проблемы с привязками - вполне вероятно, что проблема находится тут. Еще были выпилины пара статичиских
+    //методов и статический конструктор в виду непонятности их применения.
+    //Возможно, обойти эту проблему позволяет Prism. Но пока лучше буду придерживаться канона.
+    public class RelayCommand<T> : RelayCommand
+    {
+        public RelayCommand(Action<T> execute)
+            : base(o => execute((T)o))
+        {
+        }
+
+        public RelayCommand(Action<T> execute, Func<T, bool> canExecute)
+            : base(o => execute((T)o), o => canExecute((T)o))
+        {
+        }
+    }
+
     public class RelayCommand : ICommand
     {
-        private readonly Action execute;
-        private readonly Func<bool> canExecute;
+        private readonly Func<object, bool> _canExecute;
+        private readonly Action<object> _execute;
 
-        public RelayCommand(Action execute)
+        public RelayCommand(Action<object> execute)
             : this(execute, null)
-        { }
+        {
+        }
 
-        public RelayCommand(Action execute, Func<bool> canExecute)
+        public RelayCommand(Action<object> execute, Func<object, bool> canExecute)
         {
             if (execute == null)
-                throw new ArgumentNullException("execute is null.");
+                throw new ArgumentNullException("execute");
 
-            this.execute = execute;
-            this.canExecute = canExecute;
-            this.RaiseCanExecuteChangedAction = RaiseCanExecuteChanged;
-            SimpleCommandManager.AddRaiseCanExecuteChangedAction(ref RaiseCanExecuteChangedAction);
+            _execute = execute;
+            _canExecute = canExecute;
         }
 
-        ~RelayCommand()
+        [DebuggerStepThrough]
+        public bool CanExecute(object parameter)
         {
-            RemoveCommand();
-        }
-
-        public void RemoveCommand()
-        {
-            SimpleCommandManager.RemoveRaiseCanExecuteChangedAction(RaiseCanExecuteChangedAction);
-        }
-
-        bool ICommand.CanExecute(object parameter)
-        {
-            return CanExecute;
+            return _canExecute == null || _canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            execute();
-            SimpleCommandManager.RefreshCommandStates();
+            _execute(parameter);
         }
 
-        public bool CanExecute
-        {
-            get { return canExecute == null || canExecute(); }
-        }
+        public event EventHandler CanExecuteChanged = delegate { };
 
         public void RaiseCanExecuteChanged()
         {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, new EventArgs());
-            }
-        }
-
-        private readonly Action RaiseCanExecuteChangedAction;
-
-        public event EventHandler CanExecuteChanged;
-    }
-
-    public static class SimpleCommandManager
-    {
-        private static List<Action> _raiseCanExecuteChangedActions = new List<Action>();
-
-        public static void AddRaiseCanExecuteChangedAction(ref Action raiseCanExecuteChangedAction)
-        {
-            _raiseCanExecuteChangedActions.Add(raiseCanExecuteChangedAction);
-        }
-
-        public static void RemoveRaiseCanExecuteChangedAction(Action raiseCanExecuteChangedAction)
-        {
-            _raiseCanExecuteChangedActions.Remove(raiseCanExecuteChangedAction);
-        }
-
-        public static void AssignOnPropertyChanged(ref PropertyChangedEventHandler propertyEventHandler)
-        {
-            propertyEventHandler += OnPropertyChanged;
-        }
-
-        private static void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            // this if clause is to prevent an infinity loop
-            if (e.PropertyName != "CanExecute")
-            {
-                RefreshCommandStates();
-            }
-        }
-
-        public static void RefreshCommandStates()
-        {
-            for (var i = 0; i < _raiseCanExecuteChangedActions.Count; i++)
-            {
-                var raiseCanExecuteChangedAction = _raiseCanExecuteChangedActions[i];
-                if (raiseCanExecuteChangedAction != null)
-                {
-                    raiseCanExecuteChangedAction.Invoke();
-                }
-            }
+            CanExecuteChanged(this, EventArgs.Empty);
         }
     }
 }

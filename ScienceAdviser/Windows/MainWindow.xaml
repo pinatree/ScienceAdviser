@@ -6,7 +6,7 @@
         xmlns:converters="clr-namespace:ScienceAdviser.Converters"
         xmlns:local="clr-namespace:ScienceAdviser"
         mc:Ignorable="d"
-        Title="Kowalski analysis" Height="550" Width="800" Icon="/Images/ShkiperPenguin.png">
+        Title="Kowalski analysis" Height="550" Width="800" Icon="/Images/ShkiperPenguin.png" Name="mainWindow">
     <Window.Resources>
         <converters:NullOrEmpryStrToBoolConverter x:Key="NullOrEmpryStrToBoolConverter"/>
     </Window.Resources>
@@ -33,38 +33,50 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа деталей" />
-            
-            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal">                
-                <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа деталей" VerticalAlignment="Center" />
+
+            <Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
                          Text="{Binding SelectedDetailGroup, Mode=OneWay}"/>                
-                <Button FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailGroupCommand}">
+                <Button Grid.Column="1" FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailGroupCommand}">
                     Выбрать
                 </Button>                
-            </StackPanel>
+            </Grid>
 
-            <TextBlock Grid.Row="1" Grid.Column="0" Text="Подгруппа деталей" />
-            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
-                <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Подгруппа деталей" VerticalAlignment="Center" />
+            <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
                          Text="{Binding SelectedDetailSubgroup, Mode=OneWay}"/>
-                <Button
+                <Button Grid.Column="1"
                     IsEnabled="{Binding SelectedDetailGroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
                         FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailSubgroupCommand}">
                     Выбрать
                 </Button>
-            </StackPanel>
+            </Grid>
 
-            <TextBlock Grid.Row="2" Grid.Column="0" Text="Деталь" />
-            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
-                <TextBox VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+            <TextBlock Grid.Row="2" Grid.Column="0" Text="Деталь" VerticalAlignment="Center" />
+            <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
                          Text="{Binding SelectedDetail, Mode=OneWay}"/>
-                <Button
+                <Button Grid.Column="1"
                     IsEnabled="{Binding SelectedDetailSubgroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
                     FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailCommand}">
                     Выбрать
                 </Button>
-            </StackPanel>
-            <Button
+            </Grid>
+            <Button VerticalAlignment="Center"
                 IsEnabled="{Binding SelectedDetail, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
                 HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
                 Добавить
@@ -81,48 +93,78 @@
 
             <TextBlock Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Уже найденные детали:" />
 
-            <ListBox Grid.Row="1" Margin="5" ItemsSource="{Binding FoundDefectDetails, FallbackValue=error}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="LightGray" Background="LightYellow" Padding="5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Grid.IsSharedSizeScope="True" FontSize="15" Text="{Binding Path=DetailGroup, FallbackValue=error}" />
-                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="1" FontSize="15" Text="{Binding Path=DetailSubGroup, FallbackValue=error}" />
-                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="2" FontSize="15" Text="{Binding Path=Detail, FallbackValue=error}" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListView Grid.Row="1" Margin="5" ItemsSource="{Binding FoundDefectDetails, FallbackValue=error}">
+                <ListView.Style>
+                    <Style TargetType="Control">
+                        <Setter Property="FontSize" Value="16" />
+                        <Setter Property="Width" Value="auto" />
+                    </Style>
+                </ListView.Style>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailGroup}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Группа
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailSubGroup}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Подгруппа
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=Detail}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Деталь
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn Width="auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Background="White" FontSize="16" Foreground="DarkBlue" Margin="2" Padding="2"
+                                            Command="{Binding Path=DataContext.RemoveDetailCommand,
+                                                RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" CommandParameter="{Binding }">
+                                        Удалить
+                                    </Button>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
             <TextBlock Grid.Row="2" Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Рекомендуемые для проверки детали:" />
 
-            <ListBox Grid.Row="3" Margin="5" ItemsSource="{Binding Recommendations, FallbackValue=error}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="LightGray" Background="LightYellow" Padding="5">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                    <ColumnDefinition SharedSizeGroup="FoundListGroup" Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Grid.IsSharedSizeScope="True" FontSize="15" Text="{Binding Path=Consequence.DetailGroup, FallbackValue=error}" />
-                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="1" FontSize="15" Text="{Binding Path=Consequence.DetailSubGroup, FallbackValue=error}" />
-                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="2" FontSize="15" Text="{Binding Path=Consequence.Detail, FallbackValue=error}" />
-                                <TextBlock Margin="10,0,0,0" Grid.IsSharedSizeScope="True" Grid.Column="4" FontSize="15" Text="{Binding Path=Reliability, FallbackValue=error}" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListView Grid.Row="3" Margin="5" ItemsSource="{Binding Recommendations, FallbackValue=error}">
+                <ListView.Style>
+                    <Style TargetType="Control">
+                        <Setter Property="FontSize" Value="16" />
+                    </Style>
+                </ListView.Style>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailGroup}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Группа
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailSubGroup}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Подгруппа
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.Detail}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Деталь
+                            </TextBlock>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Reliability}">
+                            <TextBlock MinWidth="150" FontSize="16">
+                                Достоверность
+                            </TextBlock>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
 
         </Grid>
 
