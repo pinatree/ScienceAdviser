@@ -1,5 +1,6 @@
 ﻿namespace ScienceAdviser.IModel.DataTypes
 {
+    //Запись из Excel-файла
     public class ExcelRuleWithDetailRecord
     {
         public int Id { get; set; }

@@ -49,6 +49,7 @@
     <Compile Include="Selectors\IDetailGroupSelectorViewModel.cs" />
     <Compile Include="Selectors\IDetailSelectorViewModel.cs" />
     <Compile Include="Selectors\IDetailSubgroupSelectorViewModel.cs" />
+    <Compile Include="Windows\IDirectoryWindowViewModel.cs" />
     <Compile Include="Windows\IMainWindowViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

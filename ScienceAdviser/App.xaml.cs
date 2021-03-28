@@ -13,15 +13,15 @@ namespace ScienceAdviser
     {
         public App()
         {
-            WriteAutofacDependencies();
+
         }
 
-        private void WriteAutofacDependencies()
+        public static void WriteAutofacDependencies(string fileLocation)
         {
             var builder = new ContainerBuilder();
 
             //Хардкод, разобраться с этим. Вообще, сделать или фабрику, или чтобы передавались аргументы конструктора
-            IRulesRepository repository = new RulesRepository(@"C:\Users\pinat\Desktop\Анализ дефектов\RULES_WITH_DETAILS.xlsx");
+            IRulesRepository repository = new RulesRepository(fileLocation);
             var groupSelector = new MyGroupSelector();
             var subgroupSelector = new MySubgroupSelector();
             var detailSelector = new MyDetailSelector();

@@ -1,18 +1,29 @@
-﻿using OfficeOpenXml;
-using ScienceAdviser.IModel.DataTypes;
+﻿/*
+    Класс для считывания данных из файла формата Excel в структуры типа RuleWithDetail (соотв. колонкам Excel-файла).
+    Структуру типа RuleWithDetail можно привести к типу RuleWithDetail, убрав ненужные данные.
+ */
+
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Collections.Generic;
+
+//Сторонняя библиотека для работы с Excel, версия для некоммерческого использования
+using OfficeOpenXml;
+
+using ScienceAdviser.IModel.DataTypes;
 
 namespace ScienceAdviser.ExcelModel.DataReaders
 {
     public class RulesWithDetailReader
     {
+        //Данные о детали хранятся в одной строке, раздеоенной неким символом.
         const string DEFAULT_PARSER = "-!$-";
         public string Parser { get; }
 
+        //Расположение файла
         public string FileLocation { get; }
 
+        //Если есть заголовок, то первую строку пропускаем
         public bool WithHeader { get; }
 
         public RulesWithDetailReader(string readPath, bool withHeader, string parser = DEFAULT_PARSER)
@@ -22,6 +33,7 @@ namespace ScienceAdviser.ExcelModel.DataReaders
             this.Parser = parser;
         }
 
+        //Получаем записи в "сыром" виде
         public List<ExcelRuleWithDetailRecord> ReadRecordsFromPath()
         {
             if(File.Exists(FileLocation) == false)
@@ -96,6 +108,7 @@ namespace ScienceAdviser.ExcelModel.DataReaders
             return result;
         }
 
+        //Конвертируем записи у удобный для использования формат
         public List<RuleWithDetail> GetRuleWithDetailsFromRecords(List<ExcelRuleWithDetailRecord> ruleRecords)
         {
             List<RuleWithDetail> result = new List<RuleWithDetail>(ruleRecords.Count);
@@ -111,6 +124,7 @@ namespace ScienceAdviser.ExcelModel.DataReaders
         }
     }
 
+    //Helper с конвертерами
     public static class RulesWithDetailHelper
     {
         public static DetailDefect DetailInfoFromStr(string source, string parser)

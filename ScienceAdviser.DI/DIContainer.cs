@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
+﻿using Autofac;
 
 namespace ScienceAdviser.DI
 {
+    //Внедрение зависимостей в программе висит на этом небольшом статическом классе
+    //Обратите внимание, что контейнер нужно инициализировать где-нибудь в другом месте!
     public static class DIContainer
     {
+        //Контейнер
         public static IContainer Container;
 
         public static T GetInstance<T>()
