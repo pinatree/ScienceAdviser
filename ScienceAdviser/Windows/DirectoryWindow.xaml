@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ScienceAdviser.View.Windows"
         mc:Ignorable="d"
-        Title="Расположение файла" Height="200" Width="450">
+        Title="Расположение файла" Height="220" Width="450" Icon="/Images/kfu_icon.jpg">
     <Window.Style>
         <Style TargetType="Control">
             <Setter Property="FontSize" Value="18" />
         </Style>
     </Window.Style>
-    <Grid Background="LightGreen">
+    <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center">
-            Пожалуйста, укажите расположение файла c данными формата Excel
+        <TextBlock Margin="10" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" TextAlignment="Center">
+            Пожалуйста, укажите расположение файла с ассоциативными правилами (.xlsx формат)
         </TextBlock>
 
         <Grid Grid.Row="1" Margin="5">

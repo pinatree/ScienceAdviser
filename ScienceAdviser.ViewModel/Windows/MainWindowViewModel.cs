@@ -102,7 +102,8 @@ namespace ScienceAdviser.ViewModel.Windows
         private IDetailSubgroupSelector _detailSubgroupSelector;
         private IDetailSelector _detailSelector;
 
-        public MainWindowViewModel(IRulesRepository repository, IDetailGroupSelector detailGroupSelector, IDetailSubgroupSelector detailSubgroupSelector, IDetailSelector detailSelector)
+        public MainWindowViewModel(IRulesRepository repository, IDetailGroupSelector detailGroupSelector,
+            IDetailSubgroupSelector detailSubgroupSelector, IDetailSelector detailSelector)
         {
             _repository = repository;
             _detailGroupSelector = detailGroupSelector;
@@ -138,7 +139,8 @@ namespace ScienceAdviser.ViewModel.Windows
 
         private void FindDetail()
         {
-            string callResult = _detailSelector.SelectDetailGroup(_repository, SelectedDetailGroup, SelectedDetailSubgroup);
+            string callResult = _detailSelector.SelectDetailGroup(_repository, SelectedDetailGroup,
+                SelectedDetailSubgroup);
 
             if (callResult != null && callResult != "")
             {
@@ -183,6 +185,8 @@ namespace ScienceAdviser.ViewModel.Windows
                         newRecommendations.Add(rule);
                 }
             }
+
+            newRecommendations = new ObservableCollection<RuleWithDetail>(newRecommendations.GroupBy(c => (c.Consequence.Detail + c.Consequence.DetailGroup + c.Consequence.DetailSubGroup), (key, c) => c.FirstOrDefault()));
 
             Recommendations = new ObservableCollection<RuleWithDetail>(newRecommendations.OrderByDescending(recommendation => recommendation.Reliability));
         }

@@ -6,13 +6,14 @@
         xmlns:converters="clr-namespace:ScienceAdviser.Converters"
         xmlns:local="clr-namespace:ScienceAdviser"
         mc:Ignorable="d"
-        Title="Kowalski analysis" Height="550" Width="800" Icon="/Images/ShkiperPenguin.png" Name="mainWindow">
+        Title="Анализ деталей" Height="550" Width="800" Icon="/Images/kfu_icon.jpg" Name="mainWindow">
     <Window.Resources>
         <converters:NullOrEmpryStrToBoolConverter x:Key="NullOrEmpryStrToBoolConverter"/>
     </Window.Resources>
     <Window.Style>
         <Style TargetType="Control">
-            <Setter Property="FontSize" Value="30" />
+            <Setter Property="FontSize" Value="26" />
+            <Setter Property="FontFamily" Value="{StaticResource Roboto}" />
         </Style>
     </Window.Style>
     <Grid Margin="5">
@@ -31,55 +32,41 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <TextBlock Grid.Row="0" Grid.Column="0" Text="Группа деталей" VerticalAlignment="Center" />
 
-            <Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetailGroup, Mode=OneWay}"/>                
-                <Button Grid.Column="1" FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailGroupCommand}">
-                    Выбрать
-                </Button>                
-            </Grid>
+            <TextBox Foreground="DarkBlue" Grid.Column="1" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+                         Text="{Binding SelectedDetailGroup, Mode=OneWay, FallbackValue=sel_det_group_binding}"/>
+            <Button Grid.Column="2" FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailGroupCommand}">
+                Выбрать
+            </Button>
 
             <TextBlock Grid.Row="1" Grid.Column="0" Text="Подгруппа деталей" VerticalAlignment="Center" />
-            <Grid Grid.Row="1" Grid.Column="1" VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetailSubgroup, Mode=OneWay}"/>
-                <Button Grid.Column="1"
+
+            <TextBox Foreground="DarkBlue" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+                         Text="{Binding SelectedDetailSubgroup, Mode=OneWay, FallbackValue=sel_det_subgroup_binding}"/>
+            <Button Grid.Row="1" Grid.Column="2"
                     IsEnabled="{Binding SelectedDetailGroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
                         FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailSubgroupCommand}">
-                    Выбрать
-                </Button>
-            </Grid>
+                Выбрать
+            </Button>
+
 
             <TextBlock Grid.Row="2" Grid.Column="0" Text="Деталь" VerticalAlignment="Center" />
-            <Grid Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="auto" />
-                </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
-                         Text="{Binding SelectedDetail, Mode=OneWay}"/>
-                <Button Grid.Column="1"
+            <TextBox Foreground="DarkBlue" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" FontSize="20" Margin="5" MinWidth="400" IsReadOnly="True"
+                         Text="{Binding SelectedDetail, Mode=OneWay, FallbackValue=sel_detail_binding}"/>
+            <Button Grid.Row="2" Grid.Column="2"
                     IsEnabled="{Binding SelectedDetailSubgroup, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
                     FontSize="20" Margin="5" Background="White" Command="{Binding FindDetailCommand}">
-                    Выбрать
-                </Button>
-            </Grid>
-            <Button VerticalAlignment="Center"
+                Выбрать
+            </Button>
+            
+            <Button VerticalAlignment="Center" Grid.Column="2"
                 IsEnabled="{Binding SelectedDetail, Mode=OneWay, Converter={StaticResource NullOrEmpryStrToBoolConverter}}"
-                HorizontalAlignment="Right" Grid.Row="4" Grid.ColumnSpan="2" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
-                Добавить
+                HorizontalAlignment="Right" Grid.Row="4" FontSize="20" Margin="5" Background="White" Command="{Binding AddToFoundListCommand}">
+                <TextBlock Margin="1" TextWrapping="Wrap">Добавить</TextBlock>
             </Button>
         </Grid>
 
@@ -91,7 +78,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Уже найденные детали:" />
+            <TextBlock Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Введенные детали:" />
 
             <ListView Grid.Row="1" Margin="5" ItemsSource="{Binding FoundDefectDetails, FallbackValue=error}">
                 <ListView.Style>
@@ -102,18 +89,18 @@
                 </ListView.Style>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailGroup}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailGroup, FallbackValue='group_binding'}">
+                            <TextBlock MinWidth="200" FontSize="16">
                                 Группа
                             </TextBlock>
                         </GridViewColumn>
-                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailSubGroup}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=DetailSubGroup, FallbackValue='subgroup_binding'}">
+                            <TextBlock MinWidth="200" FontSize="16">
                                 Подгруппа
                             </TextBlock>
                         </GridViewColumn>
-                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=Detail}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn Width="auto" DisplayMemberBinding="{Binding Path=Detail, FallbackValue='detail_binding'}">
+                            <TextBlock MinWidth="220" FontSize="16">
                                 Деталь
                             </TextBlock>
                         </GridViewColumn>
@@ -132,7 +119,7 @@
                 </ListView.View>
             </ListView>
 
-            <TextBlock Grid.Row="2" Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Рекомендуемые для проверки детали:" />
+            <TextBlock Grid.Row="2" Margin="5,0,0,0" Grid.Column="0" FontSize="16" Text="Рекомендуемые к проверке детали:" />
 
             <ListView Grid.Row="3" Margin="5" ItemsSource="{Binding Recommendations, FallbackValue=error}">
                 <ListView.Style>
@@ -142,23 +129,23 @@
                 </ListView.Style>
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailGroup}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailGroup, FallbackValue='group_binding'}">
+                            <TextBlock MinWidth="170" FontSize="16">
                                 Группа
                             </TextBlock>
                         </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailSubGroup}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.DetailSubGroup, FallbackValue='subgroup_binding'}">
+                            <TextBlock MinWidth="200" FontSize="16">
                                 Подгруппа
                             </TextBlock>
                         </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.Detail}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Consequence.Detail, FallbackValue='detail_binding'}">
+                            <TextBlock MinWidth="200" FontSize="16">
                                 Деталь
                             </TextBlock>
                         </GridViewColumn>
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Reliability}">
-                            <TextBlock MinWidth="150" FontSize="16">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Reliability, FallbackValue='reliability_binding'}">
+                            <TextBlock MinWidth="135" FontSize="16">
                                 Достоверность
                             </TextBlock>
                         </GridViewColumn>
